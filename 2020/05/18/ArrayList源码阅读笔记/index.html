@@ -88,7 +88,7 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>ArrayList的本质是一个可动态缩减的数组，内部由一个Object[] element对象数组来存储，int size记录数组大小。<br>ArrayList继承了java.util.AbstractList<E>，所有实现的接口有:Serializable ， Cloneable ， Iterable <E>， Collection <E>， List <E>， RandomAccess</p>
+        <h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>ArrayList的本质是一个可动态缩减的数组，内部由一个Object[] element对象数组来存储，int size记录数组大小。<br>ArrayList继承了java.util.AbstractList<E>，所有实现的接口有:Serializable ， Cloneable ， Iterable <E>， Collection <E>， List <E>， RandomAccess</E></E></E></E></p>
 <h3 id="扩容机制"><a href="#扩容机制" class="headerlink" title="扩容机制"></a>扩容机制</h3><p>数组的缺点是声明时必须给出大小，且一旦声明后大小就无法修改。ArrayList由于底层是数组，所以需要解决数组扩容的问题。<br>当ArrayList的容量达到上限时，它的处理方式是这样的：<br>1.声明一个更大的数组<br>2.把原数组的对象挪到新数组中</p>
 <p>相关方法如下:</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;**</span><br><span class="line"> * 在add(),addAll()等方法中都会调用此方法扩容</span><br><span class="line"> * @param minCapacity 支持add等操作所需的最小容量</span><br><span class="line"> *&#x2F;</span><br><span class="line">private void ensureCapacityInternal(int minCapacity) &#123;</span><br><span class="line">    ensureExplicitCapacity(calculateCapacity(elementData, minCapacity));</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">&#x2F;**</span><br><span class="line"> * 确保容量是否够用，如果不够用，则扩容</span><br><span class="line"> * @param minCapacity</span><br><span class="line"> *&#x2F;</span><br><span class="line">private void ensureExplicitCapacity(int minCapacity) &#123;</span><br><span class="line">    &#x2F;&#x2F;此处判断所需的最小容量有没有超过ArrayList大小，如超过，调用grow方法</span><br><span class="line">    if (minCapacity - elementData.length &gt; 0)</span><br><span class="line">        grow(minCapacity);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">&#x2F;**</span><br><span class="line"> * 扩容的核心方法，会根据原本大小得出一个新的数组对象，并将原数组的对象数据复制过去。</span><br><span class="line"> * @param minCapacity </span><br><span class="line"> *&#x2F;</span><br><span class="line">private void grow(int minCapacity) &#123;</span><br><span class="line">    int oldCapacity &#x3D; elementData.length;</span><br><span class="line">    &#x2F;&#x2F; 数组大小扩容1.5倍</span><br><span class="line">    int newCapacity &#x3D; oldCapacity + (oldCapacity &gt;&gt; 1);</span><br><span class="line">    &#x2F;&#x2F; 如果新大小还是小于minCapacity，则大小设置为minCapacity</span><br><span class="line">    if (newCapacity - minCapacity &lt; 0)</span><br><span class="line">        newCapacity &#x3D; minCapacity;</span><br><span class="line">    &#x2F;&#x2F; 如果还是过小，则赋值一个最大数</span><br><span class="line">    if (newCapacity - MAX_ARRAY_SIZE &gt; 0)</span><br><span class="line">        newCapacity &#x3D; hugeCapacity(minCapacity);</span><br><span class="line">    &#x2F;&#x2F; 复制老数组对象到新数组</span><br><span class="line">    elementData &#x3D; Arrays.copyOf(elementData, newCapacity);</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
@@ -98,7 +98,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/05/18/ArrayList%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/" data-id="ckdcq6dh700005su24cg50w0d" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2020/05/18/ArrayList%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/" data-id="ckdcxkbq30000xgu26wdahe1e" class="article-share-link">Share</a>
       
       
     </footer>
@@ -106,6 +106,15 @@
   
     
 <nav id="article-nav">
+  
+    <a href="/2020/08/02/test/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          test
+        
+      </div>
+    </a>
   
   
     <a href="/2020/05/07/%E6%97%A0%E7%89%88%E6%9D%83%E7%B4%A0%E6%9D%90%E7%BD%91%E6%94%B6%E9%9B%86/" id="article-nav-older" class="article-nav-link-wrap">
@@ -134,7 +143,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">归档</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">五月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">三月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">八月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">九月 2018</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/08/">八月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">五月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">三月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">八月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">九月 2018</a></li></ul>
     </div>
   </div>
 
@@ -145,6 +154,10 @@
     <h3 class="widget-title">最新文章</h3>
     <div class="widget">
       <ul>
+        
+          <li>
+            <a href="/2020/08/02/test/">test</a>
+          </li>
         
           <li>
             <a href="/2020/05/18/ArrayList%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/">ArrayList源码阅读笔记</a>
@@ -160,10 +173,6 @@
         
           <li>
             <a href="/2019/08/02/TODO%20LIST/">TODO LIST</a>
-          </li>
-        
-          <li>
-            <a href="/2018/09/17/Spring%20Cloud%E7%9A%84%E5%90%84%E7%A7%8D%E8%B5%84%E6%96%99/">Spring Cloud的各种资料</a>
           </li>
         
       </ul>
