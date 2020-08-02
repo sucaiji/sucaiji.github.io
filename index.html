@@ -64,10 +64,10 @@
       <div class="outer">
         <section id="main">
   
-    <article id="post-TODO LIST" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-hello-world" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2020/08/02/TODO%20LIST/" class="article-date">
-  <time datetime="2020-08-02T06:38:00.000Z" itemprop="datePublished">2020-08-02</time>
+    <a href="/2020/08/02/hello-world/" class="article-date">
+  <time datetime="2020-08-02T03:48:01.200Z" itemprop="datePublished">2020-08-02</time>
 </a>
     
   </div>
@@ -78,7 +78,184 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2020/08/02/TODO%20LIST/">TODO LIST</a>
+      <a class="article-title" href="/2020/08/02/hello-world/">Hello World</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>Welcome to <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a target="_blank" rel="noopener" href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a target="_blank" rel="noopener" href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
+<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/writing.html">Writing</a></p>
+<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/server.html">Server</a></p>
+<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/generating.html">Generating</a></p>
+<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2020/08/02/hello-world/" data-id="ckdcpk3zh0000owu258szgb8i" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-ArrayList源码阅读笔记" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/05/18/ArrayList%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/" class="article-date">
+  <time datetime="2020-05-18T12:37:07.000Z" itemprop="datePublished">2020-05-18</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/05/18/ArrayList%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/">ArrayList源码阅读笔记</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>ArrayList的本质是一个可动态缩减的数组，内部由一个Object[] element对象数组来存储，int size记录数组大小。<br>ArrayList继承了java.util.AbstractList<E>，所有实现的接口有:Serializable ， Cloneable ， Iterable <E>， Collection <E>， List <E>， RandomAccess</p>
+<h3 id="扩容机制"><a href="#扩容机制" class="headerlink" title="扩容机制"></a>扩容机制</h3><p>数组的缺点是声明时必须给出大小，且一旦声明后大小就无法修改。ArrayList由于底层是数组，所以需要解决数组扩容的问题。<br>当ArrayList的容量达到上限时，它的处理方式是这样的：<br>1.声明一个更大的数组<br>2.把原数组的对象挪到新数组中</p>
+<p>相关方法如下:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;**</span><br><span class="line"> * 在add(),addAll()等方法中都会调用此方法扩容</span><br><span class="line"> * @param minCapacity 支持add等操作所需的最小容量</span><br><span class="line"> *&#x2F;</span><br><span class="line">private void ensureCapacityInternal(int minCapacity) &#123;</span><br><span class="line">    ensureExplicitCapacity(calculateCapacity(elementData, minCapacity));</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">&#x2F;**</span><br><span class="line"> * 确保容量是否够用，如果不够用，则扩容</span><br><span class="line"> * @param minCapacity</span><br><span class="line"> *&#x2F;</span><br><span class="line">private void ensureExplicitCapacity(int minCapacity) &#123;</span><br><span class="line">    &#x2F;&#x2F;此处判断所需的最小容量有没有超过ArrayList大小，如超过，调用grow方法</span><br><span class="line">    if (minCapacity - elementData.length &gt; 0)</span><br><span class="line">        grow(minCapacity);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">&#x2F;**</span><br><span class="line"> * 扩容的核心方法，会根据原本大小得出一个新的数组对象，并将原数组的对象数据复制过去。</span><br><span class="line"> * @param minCapacity </span><br><span class="line"> *&#x2F;</span><br><span class="line">private void grow(int minCapacity) &#123;</span><br><span class="line">    int oldCapacity &#x3D; elementData.length;</span><br><span class="line">    &#x2F;&#x2F; 数组大小扩容1.5倍</span><br><span class="line">    int newCapacity &#x3D; oldCapacity + (oldCapacity &gt;&gt; 1);</span><br><span class="line">    &#x2F;&#x2F; 如果新大小还是小于minCapacity，则大小设置为minCapacity</span><br><span class="line">    if (newCapacity - minCapacity &lt; 0)</span><br><span class="line">        newCapacity &#x3D; minCapacity;</span><br><span class="line">    &#x2F;&#x2F; 如果还是过小，则赋值一个最大数</span><br><span class="line">    if (newCapacity - MAX_ARRAY_SIZE &gt; 0)</span><br><span class="line">        newCapacity &#x3D; hugeCapacity(minCapacity);</span><br><span class="line">    &#x2F;&#x2F; 复制老数组对象到新数组</span><br><span class="line">    elementData &#x3D; Arrays.copyOf(elementData, newCapacity);</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="RandomAccess接口"><a href="#RandomAccess接口" class="headerlink" title="RandomAccess接口"></a>RandomAccess接口</h3><h3 id="Iterator和ListIterator的区别"><a href="#Iterator和ListIterator的区别" class="headerlink" title="Iterator和ListIterator的区别"></a>Iterator和ListIterator的区别</h3><h3 id="批量删除batchRemove"><a href="#批量删除batchRemove" class="headerlink" title="批量删除batchRemove"></a>批量删除batchRemove</h3><p>ArrayList的removeAll和retainAll方法均使用了batchRemove批量删除，此方法使用了双指针思想。<br>设int r = 0为快指针，int w = 0为慢指针。遍历r到size，如果发现符合要求的数，和w交换位置，同时w++。<br>循环完毕后所有不符合要求的数都到了w后面，这时w-1指向最后一个符合要求的元素，此时将w - 1之后的元素删除。<br>核心算法为:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">int r &#x3D; 0, w &#x3D; 0;</span><br><span class="line">try &#123;</span><br><span class="line">    for (; r &lt; size; r++) &#123;</span><br><span class="line">        if (c.contains(elementData[r]))</span><br><span class="line">            elementData[w++] &#x3D; elementData[r];</span><br><span class="line">    &#125;</span><br><span class="line">&#125; finally &#123;</span><br><span class="line">    if (r !&#x3D; size) &#123;</span><br><span class="line">        System.arraycopy(elementData, r,</span><br><span class="line">                         elementData, w,</span><br><span class="line">                         size - r);</span><br><span class="line">        w +&#x3D; size - r;</span><br><span class="line">    &#125;</span><br><span class="line">    if (w !&#x3D; size) &#123;</span><br><span class="line">        for (int i &#x3D; w; i &lt; size; i++)</span><br><span class="line">            elementData[i] &#x3D; null;</span><br><span class="line">        modCount +&#x3D; size - w;</span><br><span class="line">        size &#x3D; w;</span><br><span class="line">        modified &#x3D; true;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2020/05/18/ArrayList%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/" data-id="ckdcq6dh700005su24cg50w0d" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-无版权素材网收集" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/05/07/%E6%97%A0%E7%89%88%E6%9D%83%E7%B4%A0%E6%9D%90%E7%BD%91%E6%94%B6%E9%9B%86/" class="article-date">
+  <time datetime="2020-05-07T08:54:02.000Z" itemprop="datePublished">2020-05-07</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/05/07/%E6%97%A0%E7%89%88%E6%9D%83%E7%B4%A0%E6%9D%90%E7%BD%91%E6%94%B6%E9%9B%86/">无版权素材网收集</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="图片类"><a href="#图片类" class="headerlink" title="图片类"></a>图片类</h1><h3 id="Unsplash"><a href="#Unsplash" class="headerlink" title="Unsplash"></a>Unsplash</h3><p>免费、无版权,可商用<br><a target="_blank" rel="noopener" href="https://unsplash.com/">Unsplash</a></p>
+<h3 id="pixabay"><a href="#pixabay" class="headerlink" title="pixabay"></a>pixabay</h3><p><a target="_blank" rel="noopener" href="https://pixabay.com/">pixabay</a></p>
+<h1 id="音乐音效"><a href="#音乐音效" class="headerlink" title="音乐音效"></a>音乐音效</h1><h3 id="freesound"><a href="#freesound" class="headerlink" title="freesound"></a>freesound</h3><p>有免费的有付费的<br><a target="_blank" rel="noopener" href="https://freesound.org/">freesound</a></p>
+<h3 id=""><a href="#" class="headerlink" title=""></a></h3><p><a target="_blank" rel="noopener" href="https://www.findsounds.com/typesChinese.html">https://www.findsounds.com/typesChinese.html</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2020/05/07/%E6%97%A0%E7%89%88%E6%9D%83%E7%B4%A0%E6%9D%90%E7%BD%91%E6%94%B6%E9%9B%86/" data-id="ckdcpv4yr0004ygu27o0uaht6" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-Eureka集群的节点之间无法互相注册的问题" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/03/23/Eureka%E9%9B%86%E7%BE%A4%E7%9A%84%E8%8A%82%E7%82%B9%E4%B9%8B%E9%97%B4%E6%97%A0%E6%B3%95%E4%BA%92%E7%9B%B8%E6%B3%A8%E5%86%8C%E7%9A%84%E9%97%AE%E9%A2%98/" class="article-date">
+  <time datetime="2020-03-23T06:06:03.000Z" itemprop="datePublished">2020-03-23</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/03/23/Eureka%E9%9B%86%E7%BE%A4%E7%9A%84%E8%8A%82%E7%82%B9%E4%B9%8B%E9%97%B4%E6%97%A0%E6%B3%95%E4%BA%92%E7%9B%B8%E6%B3%A8%E5%86%8C%E7%9A%84%E9%97%AE%E9%A2%98/">Eureka集群的节点之间无法互相注册的问题</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>今天根据<a target="_blank" rel="noopener" href="https://blog.csdn.net/zyb2017/article/details/80220071">网上配置Eureka高可用注册中心的教程</a>来试着配置eureka集群。</p>
+<p>我的Eureka配置文件如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">---</span><br><span class="line">spring:</span><br><span class="line">  profiles: peer1</span><br><span class="line">  application:</span><br><span class="line">    name: eureka-server</span><br><span class="line">server:</span><br><span class="line">  port: 8761</span><br><span class="line"></span><br><span class="line">eureka:</span><br><span class="line">  instance:</span><br><span class="line">    hostname: localhost</span><br><span class="line">  client:</span><br><span class="line">    fetch-registry: true</span><br><span class="line">    register-with-eureka: false</span><br><span class="line">    serviceUrl:</span><br><span class="line">      defaultZone: http:&#x2F;&#x2F;localhost:8762&#x2F;eureka&#x2F;</span><br><span class="line">---</span><br><span class="line">spring:</span><br><span class="line">  profiles: peer2</span><br><span class="line">  application:</span><br><span class="line">    name: eureka-server</span><br><span class="line">server:</span><br><span class="line">  port: 8762</span><br><span class="line"></span><br><span class="line">eureka:</span><br><span class="line">  instance:</span><br><span class="line">    hostname: localhost</span><br><span class="line">  client:</span><br><span class="line">    fetch-registry: true</span><br><span class="line">    register-with-eureka: false</span><br><span class="line">    serviceUrl:</span><br><span class="line">      defaultZone: http:&#x2F;&#x2F;localhost:8761&#x2F;eureka&#x2F;</span><br></pre></td></tr></table></figure>
+<p>运行时启动两个实例，profiles分别为peer1和peer2。<br>启动后访问localhost:8761，eureka界面如下:<br><img src="http://sucaiji.net/usr/uploads/2020/03/344391222.png" alt="1.png"></p>
+<p>访问localhost:8762，界面如下：<br><img src="http://sucaiji.net/usr/uploads/2020/03/2112837234.png" alt="2.png"></p>
+<p>可见peer1和peer2之间并没有互相注册，因为peer1和peer2中unavailable-replicas和<br>available-replicas为空，且我在peer1中注册的zuul实例，并没有共享给peer2.</p>
+<p>后来发现原因是因为如果hostname写的localhost或者127.0.0.1的话，就会出现这种问题，当时嫌麻烦就用的localhost代替，坑啊。</p>
+<p><a target="_blank" rel="noopener" href="https://jingyan.baidu.com/article/425e69e6e479a2be15fc16e1.html">这是win10改host的教程</a>，将peer1和peer2都指向localhost之后，修改Eureka配置如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">---</span><br><span class="line">spring:</span><br><span class="line">  profiles: peer1</span><br><span class="line">  application:</span><br><span class="line">    name: eureka-server</span><br><span class="line">server:</span><br><span class="line">  port: 8761</span><br><span class="line"></span><br><span class="line">eureka:</span><br><span class="line">  instance:</span><br><span class="line">    hostname: peer1</span><br><span class="line">  client:</span><br><span class="line">    fetch-registry: true</span><br><span class="line">    register-with-eureka: false</span><br><span class="line">    serviceUrl:</span><br><span class="line">      defaultZone: http:&#x2F;&#x2F;peer2:8762&#x2F;eureka&#x2F;</span><br><span class="line">---</span><br><span class="line">spring:</span><br><span class="line">  profiles: peer2</span><br><span class="line">  application:</span><br><span class="line">    name: eureka-server</span><br><span class="line">server:</span><br><span class="line">  port: 8762</span><br><span class="line"></span><br><span class="line">eureka:</span><br><span class="line">  instance:</span><br><span class="line">    hostname: peer2</span><br><span class="line">  client:</span><br><span class="line">    fetch-registry: true</span><br><span class="line">    register-with-eureka: false</span><br><span class="line">    serviceUrl:</span><br><span class="line">      defaultZone: http:&#x2F;&#x2F;peer1:8761&#x2F;eureka&#x2F;</span><br></pre></td></tr></table></figure>
+<p>再次启动，访问peer2:8762，看到了peer1:8761的信息和zuul实例的信息，问题解决</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2020/03/23/Eureka%E9%9B%86%E7%BE%A4%E7%9A%84%E8%8A%82%E7%82%B9%E4%B9%8B%E9%97%B4%E6%97%A0%E6%B3%95%E4%BA%92%E7%9B%B8%E6%B3%A8%E5%86%8C%E7%9A%84%E9%97%AE%E9%A2%98/" data-id="ckdcpv4yi0000ygu2bwwk8e2a" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-TODO LIST" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/08/02/TODO%20LIST/" class="article-date">
+  <time datetime="2019-08-02T06:38:00.000Z" itemprop="datePublished">2019-08-02</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/08/02/TODO%20LIST/">TODO LIST</a>
     </h1>
   
 
@@ -170,142 +347,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/08/02/TODO%20LIST/" data-id="ckdcpv4yn0001ygu24svoa5j2" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-hello-world" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2020/08/02/hello-world/" class="article-date">
-  <time datetime="2020-08-02T03:48:01.200Z" itemprop="datePublished">2020-08-02</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/08/02/hello-world/">Hello World</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>Welcome to <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a target="_blank" rel="noopener" href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a target="_blank" rel="noopener" href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/08/02/hello-world/" data-id="ckdcpk3zh0000owu258szgb8i" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-无版权素材网收集" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2020/05/07/%E6%97%A0%E7%89%88%E6%9D%83%E7%B4%A0%E6%9D%90%E7%BD%91%E6%94%B6%E9%9B%86/" class="article-date">
-  <time datetime="2020-05-07T08:54:02.000Z" itemprop="datePublished">2020-05-07</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/05/07/%E6%97%A0%E7%89%88%E6%9D%83%E7%B4%A0%E6%9D%90%E7%BD%91%E6%94%B6%E9%9B%86/">无版权素材网收集</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="图片类"><a href="#图片类" class="headerlink" title="图片类"></a>图片类</h1><h3 id="Unsplash"><a href="#Unsplash" class="headerlink" title="Unsplash"></a>Unsplash</h3><p>免费、无版权,可商用<br><a target="_blank" rel="noopener" href="https://unsplash.com/">Unsplash</a></p>
-<h3 id="pixabay"><a href="#pixabay" class="headerlink" title="pixabay"></a>pixabay</h3><p><a target="_blank" rel="noopener" href="https://pixabay.com/">pixabay</a></p>
-<h1 id="音乐音效"><a href="#音乐音效" class="headerlink" title="音乐音效"></a>音乐音效</h1><h3 id="freesound"><a href="#freesound" class="headerlink" title="freesound"></a>freesound</h3><p>有免费的有付费的<br><a target="_blank" rel="noopener" href="https://freesound.org/">freesound</a></p>
-<h3 id=""><a href="#" class="headerlink" title=""></a></h3><p><a target="_blank" rel="noopener" href="https://www.findsounds.com/typesChinese.html">https://www.findsounds.com/typesChinese.html</a></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/05/07/%E6%97%A0%E7%89%88%E6%9D%83%E7%B4%A0%E6%9D%90%E7%BD%91%E6%94%B6%E9%9B%86/" data-id="ckdcpv4yr0004ygu27o0uaht6" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-Eureka集群的节点之间无法互相注册的问题" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2020/03/23/Eureka%E9%9B%86%E7%BE%A4%E7%9A%84%E8%8A%82%E7%82%B9%E4%B9%8B%E9%97%B4%E6%97%A0%E6%B3%95%E4%BA%92%E7%9B%B8%E6%B3%A8%E5%86%8C%E7%9A%84%E9%97%AE%E9%A2%98/" class="article-date">
-  <time datetime="2020-03-23T06:06:03.000Z" itemprop="datePublished">2020-03-23</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/03/23/Eureka%E9%9B%86%E7%BE%A4%E7%9A%84%E8%8A%82%E7%82%B9%E4%B9%8B%E9%97%B4%E6%97%A0%E6%B3%95%E4%BA%92%E7%9B%B8%E6%B3%A8%E5%86%8C%E7%9A%84%E9%97%AE%E9%A2%98/">Eureka集群的节点之间无法互相注册的问题</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>今天根据<a target="_blank" rel="noopener" href="https://blog.csdn.net/zyb2017/article/details/80220071">网上配置Eureka高可用注册中心的教程</a>来试着配置eureka集群。</p>
-<p>我的Eureka配置文件如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">---</span><br><span class="line">spring:</span><br><span class="line">  profiles: peer1</span><br><span class="line">  application:</span><br><span class="line">    name: eureka-server</span><br><span class="line">server:</span><br><span class="line">  port: 8761</span><br><span class="line"></span><br><span class="line">eureka:</span><br><span class="line">  instance:</span><br><span class="line">    hostname: localhost</span><br><span class="line">  client:</span><br><span class="line">    fetch-registry: true</span><br><span class="line">    register-with-eureka: false</span><br><span class="line">    serviceUrl:</span><br><span class="line">      defaultZone: http:&#x2F;&#x2F;localhost:8762&#x2F;eureka&#x2F;</span><br><span class="line">---</span><br><span class="line">spring:</span><br><span class="line">  profiles: peer2</span><br><span class="line">  application:</span><br><span class="line">    name: eureka-server</span><br><span class="line">server:</span><br><span class="line">  port: 8762</span><br><span class="line"></span><br><span class="line">eureka:</span><br><span class="line">  instance:</span><br><span class="line">    hostname: localhost</span><br><span class="line">  client:</span><br><span class="line">    fetch-registry: true</span><br><span class="line">    register-with-eureka: false</span><br><span class="line">    serviceUrl:</span><br><span class="line">      defaultZone: http:&#x2F;&#x2F;localhost:8761&#x2F;eureka&#x2F;</span><br></pre></td></tr></table></figure>
-<p>运行时启动两个实例，profiles分别为peer1和peer2。<br>启动后访问localhost:8761，eureka界面如下:<br><img src="http://sucaiji.net/usr/uploads/2020/03/344391222.png" alt="1.png"></p>
-<p>访问localhost:8762，界面如下：<br><img src="http://sucaiji.net/usr/uploads/2020/03/2112837234.png" alt="2.png"></p>
-<p>可见peer1和peer2之间并没有互相注册，因为peer1和peer2中unavailable-replicas和<br>available-replicas为空，且我在peer1中注册的zuul实例，并没有共享给peer2.</p>
-<p>后来发现原因是因为如果hostname写的localhost或者127.0.0.1的话，就会出现这种问题，当时嫌麻烦就用的localhost代替，坑啊。</p>
-<p><a target="_blank" rel="noopener" href="https://jingyan.baidu.com/article/425e69e6e479a2be15fc16e1.html">这是win10改host的教程</a>，将peer1和peer2都指向localhost之后，修改Eureka配置如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">---</span><br><span class="line">spring:</span><br><span class="line">  profiles: peer1</span><br><span class="line">  application:</span><br><span class="line">    name: eureka-server</span><br><span class="line">server:</span><br><span class="line">  port: 8761</span><br><span class="line"></span><br><span class="line">eureka:</span><br><span class="line">  instance:</span><br><span class="line">    hostname: peer1</span><br><span class="line">  client:</span><br><span class="line">    fetch-registry: true</span><br><span class="line">    register-with-eureka: false</span><br><span class="line">    serviceUrl:</span><br><span class="line">      defaultZone: http:&#x2F;&#x2F;peer2:8762&#x2F;eureka&#x2F;</span><br><span class="line">---</span><br><span class="line">spring:</span><br><span class="line">  profiles: peer2</span><br><span class="line">  application:</span><br><span class="line">    name: eureka-server</span><br><span class="line">server:</span><br><span class="line">  port: 8762</span><br><span class="line"></span><br><span class="line">eureka:</span><br><span class="line">  instance:</span><br><span class="line">    hostname: peer2</span><br><span class="line">  client:</span><br><span class="line">    fetch-registry: true</span><br><span class="line">    register-with-eureka: false</span><br><span class="line">    serviceUrl:</span><br><span class="line">      defaultZone: http:&#x2F;&#x2F;peer1:8761&#x2F;eureka&#x2F;</span><br></pre></td></tr></table></figure>
-<p>再次启动，访问peer2:8762，看到了peer1:8761的信息和zuul实例的信息，问题解决</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/03/23/Eureka%E9%9B%86%E7%BE%A4%E7%9A%84%E8%8A%82%E7%82%B9%E4%B9%8B%E9%97%B4%E6%97%A0%E6%B3%95%E4%BA%92%E7%9B%B8%E6%B3%A8%E5%86%8C%E7%9A%84%E9%97%AE%E9%A2%98/" data-id="ckdcpv4yi0000ygu2bwwk8e2a" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2019/08/02/TODO%20LIST/" data-id="ckdcpv4yn0001ygu24svoa5j2" class="article-share-link">Share</a>
       
       
     </footer>
@@ -613,7 +655,7 @@ public class WebsocketServerApplication extends SpringBootServletInitializer &#1
   <div class="widget-wrap">
     <h3 class="widget-title">归档</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/08/">八月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">五月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">三月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">九月 2018</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/08/">八月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">五月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">三月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">八月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">九月 2018</a></li></ul>
     </div>
   </div>
 
@@ -626,11 +668,11 @@ public class WebsocketServerApplication extends SpringBootServletInitializer &#1
       <ul>
         
           <li>
-            <a href="/2020/08/02/TODO%20LIST/">TODO LIST</a>
+            <a href="/2020/08/02/hello-world/">Hello World</a>
           </li>
         
           <li>
-            <a href="/2020/08/02/hello-world/">Hello World</a>
+            <a href="/2020/05/18/ArrayList%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/">ArrayList源码阅读笔记</a>
           </li>
         
           <li>
@@ -642,7 +684,7 @@ public class WebsocketServerApplication extends SpringBootServletInitializer &#1
           </li>
         
           <li>
-            <a href="/2018/09/17/Spring%20Cloud%E7%9A%84%E5%90%84%E7%A7%8D%E8%B5%84%E6%96%99/">Spring Cloud的各种资料</a>
+            <a href="/2019/08/02/TODO%20LIST/">TODO LIST</a>
           </li>
         
       </ul>
