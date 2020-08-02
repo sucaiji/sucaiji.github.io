@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>Eureka集群的节点之间无法互相注册的问题 | 苏菜鸡的博客</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="今天根据网上配置Eureka高可用注册中心的教程来试着配置eureka集群。 我的Eureka配置文件如下： 1234567891011121314151617181920212223242526272829303132---spring:  profiles: peer1  application:    name: eureka-serverserver:  port: 8761eureka:">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Eureka集群的节点之间无法互相注册的问题">
+<meta property="og:url" content="http://yoursite.com/2020/03/23/Eureka%E9%9B%86%E7%BE%A4%E7%9A%84%E8%8A%82%E7%82%B9%E4%B9%8B%E9%97%B4%E6%97%A0%E6%B3%95%E4%BA%92%E7%9B%B8%E6%B3%A8%E5%86%8C%E7%9A%84%E9%97%AE%E9%A2%98/index.html">
+<meta property="og:site_name" content="苏菜鸡的博客">
+<meta property="og:description" content="今天根据网上配置Eureka高可用注册中心的教程来试着配置eureka集群。 我的Eureka配置文件如下： 1234567891011121314151617181920212223242526272829303132---spring:  profiles: peer1  application:    name: eureka-serverserver:  port: 8761eureka:">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://sucaiji.net/usr/uploads/2020/03/344391222.png">
+<meta property="og:image" content="http://sucaiji.net/usr/uploads/2020/03/2112837234.png">
+<meta property="article:published_time" content="2020-03-23T06:06:03.000Z">
+<meta property="article:modified_time" content="2020-08-02T06:39:54.478Z">
+<meta property="article:author" content="sucaiji">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://sucaiji.net/usr/uploads/2020/03/344391222.png">
+  
+    <link rel="alternate" href="/atom.xml" title="苏菜鸡的博客" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 5.0.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">苏菜鸡的博客</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="搜索"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-Eureka集群的节点之间无法互相注册的问题" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/03/23/Eureka%E9%9B%86%E7%BE%A4%E7%9A%84%E8%8A%82%E7%82%B9%E4%B9%8B%E9%97%B4%E6%97%A0%E6%B3%95%E4%BA%92%E7%9B%B8%E6%B3%A8%E5%86%8C%E7%9A%84%E9%97%AE%E9%A2%98/" class="article-date">
+  <time datetime="2020-03-23T06:06:03.000Z" itemprop="datePublished">2020-03-23</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Eureka集群的节点之间无法互相注册的问题
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>今天根据<a target="_blank" rel="noopener" href="https://blog.csdn.net/zyb2017/article/details/80220071">网上配置Eureka高可用注册中心的教程</a>来试着配置eureka集群。</p>
+<p>我的Eureka配置文件如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">---</span><br><span class="line">spring:</span><br><span class="line">  profiles: peer1</span><br><span class="line">  application:</span><br><span class="line">    name: eureka-server</span><br><span class="line">server:</span><br><span class="line">  port: 8761</span><br><span class="line"></span><br><span class="line">eureka:</span><br><span class="line">  instance:</span><br><span class="line">    hostname: localhost</span><br><span class="line">  client:</span><br><span class="line">    fetch-registry: true</span><br><span class="line">    register-with-eureka: false</span><br><span class="line">    serviceUrl:</span><br><span class="line">      defaultZone: http:&#x2F;&#x2F;localhost:8762&#x2F;eureka&#x2F;</span><br><span class="line">---</span><br><span class="line">spring:</span><br><span class="line">  profiles: peer2</span><br><span class="line">  application:</span><br><span class="line">    name: eureka-server</span><br><span class="line">server:</span><br><span class="line">  port: 8762</span><br><span class="line"></span><br><span class="line">eureka:</span><br><span class="line">  instance:</span><br><span class="line">    hostname: localhost</span><br><span class="line">  client:</span><br><span class="line">    fetch-registry: true</span><br><span class="line">    register-with-eureka: false</span><br><span class="line">    serviceUrl:</span><br><span class="line">      defaultZone: http:&#x2F;&#x2F;localhost:8761&#x2F;eureka&#x2F;</span><br></pre></td></tr></table></figure>
+<p>运行时启动两个实例，profiles分别为peer1和peer2。<br>启动后访问localhost:8761，eureka界面如下:<br><img src="http://sucaiji.net/usr/uploads/2020/03/344391222.png" alt="1.png"></p>
+<p>访问localhost:8762，界面如下：<br><img src="http://sucaiji.net/usr/uploads/2020/03/2112837234.png" alt="2.png"></p>
+<p>可见peer1和peer2之间并没有互相注册，因为peer1和peer2中unavailable-replicas和<br>available-replicas为空，且我在peer1中注册的zuul实例，并没有共享给peer2.</p>
+<p>后来发现原因是因为如果hostname写的localhost或者127.0.0.1的话，就会出现这种问题，当时嫌麻烦就用的localhost代替，坑啊。</p>
+<p><a target="_blank" rel="noopener" href="https://jingyan.baidu.com/article/425e69e6e479a2be15fc16e1.html">这是win10改host的教程</a>，将peer1和peer2都指向localhost之后，修改Eureka配置如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">---</span><br><span class="line">spring:</span><br><span class="line">  profiles: peer1</span><br><span class="line">  application:</span><br><span class="line">    name: eureka-server</span><br><span class="line">server:</span><br><span class="line">  port: 8761</span><br><span class="line"></span><br><span class="line">eureka:</span><br><span class="line">  instance:</span><br><span class="line">    hostname: peer1</span><br><span class="line">  client:</span><br><span class="line">    fetch-registry: true</span><br><span class="line">    register-with-eureka: false</span><br><span class="line">    serviceUrl:</span><br><span class="line">      defaultZone: http:&#x2F;&#x2F;peer2:8762&#x2F;eureka&#x2F;</span><br><span class="line">---</span><br><span class="line">spring:</span><br><span class="line">  profiles: peer2</span><br><span class="line">  application:</span><br><span class="line">    name: eureka-server</span><br><span class="line">server:</span><br><span class="line">  port: 8762</span><br><span class="line"></span><br><span class="line">eureka:</span><br><span class="line">  instance:</span><br><span class="line">    hostname: peer2</span><br><span class="line">  client:</span><br><span class="line">    fetch-registry: true</span><br><span class="line">    register-with-eureka: false</span><br><span class="line">    serviceUrl:</span><br><span class="line">      defaultZone: http:&#x2F;&#x2F;peer1:8761&#x2F;eureka&#x2F;</span><br></pre></td></tr></table></figure>
+<p>再次启动，访问peer2:8762，看到了peer1:8761的信息和zuul实例的信息，问题解决</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2020/03/23/Eureka%E9%9B%86%E7%BE%A4%E7%9A%84%E8%8A%82%E7%82%B9%E4%B9%8B%E9%97%B4%E6%97%A0%E6%B3%95%E4%BA%92%E7%9B%B8%E6%B3%A8%E5%86%8C%E7%9A%84%E9%97%AE%E9%A2%98/" data-id="ckdcpv4yi0000ygu2bwwk8e2a" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2020/05/07/%E6%97%A0%E7%89%88%E6%9D%83%E7%B4%A0%E6%9D%90%E7%BD%91%E6%94%B6%E9%9B%86/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          无版权素材网收集
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2018/09/17/Spring%20Cloud%E7%9A%84%E5%90%84%E7%A7%8D%E8%B5%84%E6%96%99/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Spring Cloud的各种资料</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/08/">八月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">五月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">三月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">九月 2018</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2020/08/02/TODO%20LIST/">TODO LIST</a>
+          </li>
+        
+          <li>
+            <a href="/2020/08/02/hello-world/">Hello World</a>
+          </li>
+        
+          <li>
+            <a href="/2020/05/07/%E6%97%A0%E7%89%88%E6%9D%83%E7%B4%A0%E6%9D%90%E7%BD%91%E6%94%B6%E9%9B%86/">无版权素材网收集</a>
+          </li>
+        
+          <li>
+            <a href="/2020/03/23/Eureka%E9%9B%86%E7%BE%A4%E7%9A%84%E8%8A%82%E7%82%B9%E4%B9%8B%E9%97%B4%E6%97%A0%E6%B3%95%E4%BA%92%E7%9B%B8%E6%B3%A8%E5%86%8C%E7%9A%84%E9%97%AE%E9%A2%98/">Eureka集群的节点之间无法互相注册的问题</a>
+          </li>
+        
+          <li>
+            <a href="/2018/09/17/Spring%20Cloud%E7%9A%84%E5%90%84%E7%A7%8D%E8%B5%84%E6%96%99/">Spring Cloud的各种资料</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2020 sucaiji<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>
